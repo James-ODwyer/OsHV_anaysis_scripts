@@ -8,7 +8,7 @@
 #SBATCH --nodes=1
 
 module load mafft/7.490
-module load iqtree
+module load iqtree/2.203
 
 
 RUNDIR="/path/to/run"
@@ -33,5 +33,48 @@ iqtree \
   -s ${ALIGN_DIR}/whole_genome_OSHV_alignment.mafft \
   -b 2000 \
   -alrt 2000 \
+  -m MFP \
   -T AUTO \
   --threads-max 8
+
+
+mafft \
+  --auto \
+  --maxiterate 1000 \
+  --retree 150 \
+  --op 2 \
+  --ep 0.12 \
+  --adjustdirection \
+  --thread 8 \
+  ${INPUT_FASTA} > ${ALIGN_DIR}/subset/coregenes.mafft
+
+  
+iqtree \
+  -s ${ALIGN_DIR}/subset/coregenes.mafft \
+  -p ${ALIGN_DIR}/coregenes.partitions \
+  -m MFP \
+  -B 2000 \
+  -alrt 2000 \
+  -T AUTO \
+  --threads-max 8
+
+  mafft \
+  --auto \
+  --maxiterate 1000 \
+  --retree 150 \
+  --op 2 \
+  --ep 0.12 \
+  --adjustdirection \
+  --thread 8 \
+  ${INPUT_FASTA} > ${ALIGN_DIR}/subset6genes/trancartgenes.mafft
+
+  
+iqtree \
+  -s ${ALIGN_DIR}/subset6genes/trancartgenes.mafft \
+  -p ${ALIGN_DIR}/subset6genes/trancartgenes.partitions \
+  -m MFP \
+  -B 2000 \
+  -alrt 2000 \
+  -T AUTO \
+  --threads-max 8
+
