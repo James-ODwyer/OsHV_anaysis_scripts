@@ -34,6 +34,4 @@ iqtree \
   -b 2000 \
   -alrt 2000 \
   -T AUTO \
-  --threads-max 8 \
-  -o REFERENCE_NAME \
-  -pre ${TREE_DIR}/genome_tree
+  --threads-max 8
